@@ -1,0 +1,162 @@
+#VRML_SIM R2023b utf8
+
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackground.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/backgrounds/protos/TexturedBackgroundLight.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/floors/protos/RectangleArena.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/robots/gctronic/e-puck/protos/E-puck.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/traffic/protos/TrafficCone.proto"
+EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/objects/traffic/protos/DirectionPanel.proto"
+
+WorldInfo {
+}
+Viewpoint {
+  orientation -0.295877243060262 -0.34434588557487056 0.8910008799808881 4.838402754028912
+  position -1.9678156493875454 6.502298599885815 4.599970275721762
+}
+TexturedBackground {
+}
+TexturedBackgroundLight {
+}
+RectangleArena {
+  rotation 1 0 0 0
+  floorSize 6 6
+  floorAppearance PBRAppearance {
+    baseColor 0 0.1 0.1
+    roughness 1
+    roughnessMap ImageTexture {
+      url [
+        "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/textures/parquetry/chequered_parquetry_roughness.jpg"
+      ]
+    }
+    metalness 0
+    normalMap ImageTexture {
+      url [
+        "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/textures/parquetry/chequered_parquetry_normal.jpg"
+      ]
+    }
+    occlusionMap ImageTexture {
+      url [
+        "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/projects/appearances/protos/textures/parquetry/chequered_parquetry_occlusion.jpg"
+      ]
+    }
+  }
+}
+E-puck {
+  hidden position_0_0 992.414433188695
+  hidden position_0_1 1621.213299182157
+  hidden linearVelocity_0 9.349212870517672e-07 -8.107446555597105e-06 1.7100076929637e-05
+  hidden angularVelocity_0 0.0005558428373425415 6.670219710720793e-05 5.356052033789298e-06
+  hidden rotation_1 0 -1 0 0.32884534567960677
+  hidden linearVelocity_1 1.276135143965595e-06 -1.1009730040214752e-05 1.7834408129148176e-05
+  hidden angularVelocity_1 -1.8797906080934323 -0.1171926515609438 -0.0018570160054669528
+  hidden rotation_2 0 1 0 0.15148992982370532
+  hidden linearVelocity_2 1.2621960065959951e-06 -1.0759688249655089e-05 1.6159618395228998e-05
+  hidden angularVelocity_2 -3.760137059801073 -0.23445199282382553 -0.003719390065683135
+  translation 1.7494734581369715 1.0640100880463432 0.0007164653311210727
+  rotation 0.01735627785039219 -0.01723686898011874 0.9997007802172319 1.633392627995968
+  name "Automotive"
+  controller "AutomotiveController"
+  turretSlot [
+    Camera {
+      translation 0 0 0.04
+      rotation 0 1 0 0.161799
+      name "CAM"
+      width 1280
+      height 720
+    }
+  ]
+  groundSensorsSlot [
+    DistanceSensor {
+      translation 0.01 -0.03 0.01
+      rotation 0 1 0 1.5708
+      name "IR0"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.01 -0.02 0.01
+      rotation 0 1 0 1.5708
+      name "IR1"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.01 -0.01 0.01
+      rotation 0 1 0 1.5708
+      name "IR2"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.01 0 0.01
+      rotation 0 1 0 1.5708
+      name "IR3"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.01 0.01 0.01
+      rotation 0 1 0 1.5708
+      name "IR4"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.01 0.02 0.01
+      rotation 0 1 0 1.5708
+      name "IR5"
+      type "infra-red"
+    }
+    DistanceSensor {
+      translation 0.01 0.03 0.00999996
+      rotation 0 1 0 1.5708
+      name "IR6"
+      type "infra-red"
+    }
+  ]
+}
+TrafficCone {
+  translation 1.75 1.15 0
+  scale 0.2
+}
+Solid {
+  translation -2.21 2.26 -0.016
+  children [
+    Transform {
+      translation -0.19 -0.01 0.01
+      scale 0.0007 0.0007 0.0007
+      children [
+        Shape {
+          appearance PBRAppearance {
+            roughness 1
+            metalness 0
+          }
+          geometry Mesh {
+            url [
+              "../assets/01-02-Bodenmuster/Bodenmuster-01-02-B.obj"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+  name "Wegnetz"
+}
+DirectionPanel {
+  translation 2.02374 -1.54374 0.21
+  rotation 0 0 1 -0.785395307179586
+  frontTextTexture [
+    "../assets/01-02-Bodenmuster/as.46321139.jpg"
+  ]
+}
+DirectionPanel {
+  translation -0.445322 -2.61281 0.21
+  rotation 0 0 1 -1.5707953071795862
+  name "direction panel(1)"
+  frontTextTexture [
+    "../assets/01-02-Bodenmuster/images.png"
+  ]
+}
+DirectionPanel {
+  translation -2.61914 -1.30561 0.21
+  rotation 0 0 1 -2.094395307179586
+  name "direction panel(2)"
+  frontTextTexture [
+    "../assets/01-02-Bodenmuster/buchstabe-c-fuer-hausnummernleuchte-schwarz-selbstklebend.jpg"
+  ]
+}
