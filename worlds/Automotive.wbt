@@ -10,8 +10,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.295877243060262 -0.34434588557487056 0.8910008799808881 4.838402754028912
-  position -1.9678156493875454 6.502298599885815 4.599970275721762
+  orientation -0.24365140358403775 -0.8607833533710546 0.44686240845567954 5.268204031458235
+  position -1.8837736793758606 3.439033486339617 3.68098970389639
 }
 TexturedBackground {
 }
@@ -41,31 +41,28 @@ RectangleArena {
     }
   }
 }
-E-puck {
-  hidden position_0_0 992.414433188695
-  hidden position_0_1 1621.213299182157
-  hidden linearVelocity_0 9.349212870517672e-07 -8.107446555597105e-06 1.7100076929637e-05
-  hidden angularVelocity_0 0.0005558428373425415 6.670219710720793e-05 5.356052033789298e-06
-  hidden rotation_1 0 -1 0 0.32884534567960677
-  hidden linearVelocity_1 1.276135143965595e-06 -1.1009730040214752e-05 1.7834408129148176e-05
-  hidden angularVelocity_1 -1.8797906080934323 -0.1171926515609438 -0.0018570160054669528
-  hidden rotation_2 0 1 0 0.15148992982370532
-  hidden linearVelocity_2 1.2621960065959951e-06 -1.0759688249655089e-05 1.6159618395228998e-05
-  hidden angularVelocity_2 -3.760137059801073 -0.23445199282382553 -0.003719390065683135
-  translation 1.7494734581369715 1.0640100880463432 0.0007164653311210727
-  rotation 0.01735627785039219 -0.01723686898011874 0.9997007802172319 1.633392627995968
+DEF Automotive E-puck {
+  hidden position_0_0 1197.0261994621299
+  hidden position_0_1 1977.4839426546237
+  hidden rotation_1 0 1 0 3.220991098008422
+  hidden rotation_2 0 0.9999999999999999 0 4.563756200233507
+  translation -0.195984 2.46461 -4.49413e-05
+  rotation 0.0004092908442177187 -0.0016104993870195924 0.9999986193854116 -1.4984153071795863
   name "Automotive"
   controller "AutomotiveController"
-  turretSlot [
-    Camera {
-      translation 0 0 0.04
-      rotation 0 1 0 0.161799
-      name "CAM"
-      width 1280
-      height 720
-    }
-  ]
   groundSensorsSlot [
+    Robot {
+      translation 0.01 0 0.04
+      children [
+        Camera {
+          translation 0.01 0 0
+          name "CAM"
+          width 1280
+          height 720
+        }
+      ]
+      controller "RaspberryController"
+    }
     DistanceSensor {
       translation 0.01 -0.03 0.01
       rotation 0 1 0 1.5708

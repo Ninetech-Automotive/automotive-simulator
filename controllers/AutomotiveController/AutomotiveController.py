@@ -21,15 +21,6 @@ def run_robot(robot):
     for sensor in ir_sensors:
         sensor.enable(TIME_STEP)
 
-    # Initialize Camera
-    camera = robot.getDevice('CAM')
-    camera.enable(TIME_STEP * 2)  # Adjust sampling period (in ms), e.g., 64 ms
-
-    # Get and print the camera resolution
-    width = camera.getWidth()
-    height = camera.getHeight()
-    print(f"Camera resolution: {width}x{height}")
-
     turn_end_time = 0
 
     while robot.step(TIME_STEP) != -1:
@@ -37,12 +28,6 @@ def run_robot(robot):
 
         # Read IR sensor values
         ir_values = [sensor.getValue() for sensor in ir_sensors]
-        print(f"IR values: {[f'{v:.2f}' for v in ir_values]}")
-
-        # Capture camera image (optional)
-        if camera.getSamplingPeriod() > 0:
-            image = camera.getImage()
-            print("Camera image captured")
 
         # Initialize motor speeds
         left_speed, right_speed = MAX_SPEED, MAX_SPEED
@@ -53,33 +38,26 @@ def run_robot(robot):
 
         # Check if all sensors detect the line (waypoint detection)
         if all(is_on_line(value) for value in ir_values):
-            print("Waypoint detected, looking for next line")
             left_speed = SLOW_SPEED * 0.5
             right_speed = SLOW_SPEED * 0.9
         elif is_on_line(ir_values[3]):
-            print("Center sensor on line, moving fast")
             left_speed = MAX_SPEED
             right_speed = MAX_SPEED
-        elif is_on_line(ir_values[2]):  # Slight adjustment (left)
-            print("Left inner sensor on line, steering slightly right")
+        elif is_on_line(ir_values[2]):
             left_speed = MAX_SPEED
             right_speed = MAX_SPEED * 0.7
-        elif is_on_line(ir_values[4]):  # Slight adjustment (right)
-            print("Right inner sensor on line, steering slightly left")
+        elif is_on_line(ir_values[4]):
             left_speed = MAX_SPEED * 0.7
             right_speed = MAX_SPEED
-        elif is_on_line(ir_values[0]) or is_on_line(ir_values[1]):  # Strong left turn
-            print("Left edge sensor on line, turning sharply right")
+        elif is_on_line(ir_values[0]) or is_on_line(ir_values[1]):
             left_speed = MAX_SPEED
             right_speed = MAX_SPEED * 0.5
             turn_end_time = current_time + TURN_DURATION
-        elif is_on_line(ir_values[5]) or is_on_line(ir_values[6]):  # Strong right turn
-            print("Right edge sensor on line, turning sharply left")
+        elif is_on_line(ir_values[5]) or is_on_line(ir_values[6]):
             left_speed = MAX_SPEED * 0.5
             right_speed = MAX_SPEED
             turn_end_time = current_time + TURN_DURATION
         else:
-            print("No sensor on line, searching...")
             left_speed = MAX_SPEED * 0.3
             right_speed = MAX_SPEED * 0.6
 
