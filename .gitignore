@@ -2,3 +2,4 @@ worlds/*.wbproj
 worlds/.Automotive.jpg
 controllers/AutomotiveController/build
 controllers/AutomotiveController/AutomotiveController
+controllers/RaspberryController/__pycache__
