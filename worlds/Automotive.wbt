@@ -10,8 +10,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 WorldInfo {
 }
 Viewpoint {
-  orientation -0.24365140358403775 -0.8607833533710546 0.44686240845567954 5.268204031458235
-  position -1.8837736793758606 3.439033486339617 3.68098970389639
+  orientation -0.23166031701560347 -0.7200117674435045 0.6541533094490243 5.494392253145814
+  position -5.893490686690488 3.4821767715563365 4.42692725747577
 }
 TexturedBackground {
 }
@@ -61,6 +61,7 @@ DEF Automotive E-puck {
           height 720
         }
       ]
+      name "Raspberry"
       controller "RaspberryController"
     }
     DistanceSensor {
@@ -135,23 +136,23 @@ Solid {
   name "Wegnetz"
 }
 DirectionPanel {
-  translation 2.02374 -1.54374 0.21
-  rotation 0 0 1 -0.785395307179586
+  translation 1.91874 -1.7256 -0.02
+  rotation -0.2505618966828277 -0.9351136144134614 0.2505618966828277 -1.6378353071795866
   frontTextTexture [
     "../assets/01-02-Bodenmuster/as.46321139.jpg"
   ]
 }
 DirectionPanel {
-  translation -0.445322 -2.61281 0.21
-  rotation 0 0 1 -1.5707953071795862
+  translation -0.595322 -2.61281 -0.02
+  rotation 0.577349935856137 0.5773509358560258 -0.577349935856137 2.09439
   name "direction panel(1)"
   frontTextTexture [
     "../assets/01-02-Bodenmuster/images.png"
   ]
 }
 DirectionPanel {
-  translation -2.61914 -1.30561 0.21
-  rotation 0 0 1 -2.094395307179586
+  translation -2.63964 -1.08765 -0.02
+  rotation 0.6785984389637569 0.2810841818244213 -0.6785984389637569 2.59357
   name "direction panel(2)"
   frontTextTexture [
     "../assets/01-02-Bodenmuster/buchstabe-c-fuer-hausnummernleuchte-schwarz-selbstklebend.jpg"
