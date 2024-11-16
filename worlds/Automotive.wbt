@@ -51,9 +51,25 @@ DEF Automotive E-puck {
   name "Automotive"
   controller "AutomotiveController"
   groundSensorsSlot [
+    Emitter {
+      name "ChildParentEmitter"
+      channel 0
+    }
+    Receiver {
+      name "ParentChildReceiver"
+      channel 1
+    }
     Robot {
       translation 0.01 0 0.04
       children [
+        Emitter {
+          name "ParentChildEmitter"
+          channel 1
+        }
+        Receiver {
+          name "ChildParentReceiver"
+          channel 0
+        }
         Camera {
           translation 0.01 0 0
           name "CAM"
