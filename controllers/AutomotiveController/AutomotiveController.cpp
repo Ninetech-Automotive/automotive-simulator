@@ -47,6 +47,39 @@ void receive(Receiver *receiver, Emitter *emitter) {
   }
 }
 
+void pointScanning(Robot* robot, DistanceSensor* ir[], Motor* leftMotor, Motor* rightMotor, Emitter* emitter, const int TIME_STEP) {
+    double irValues[7];
+    for (int i = 0; i < 7; ++i) {
+        irValues[i] = ir[i]->getValue();
+    }
+
+    cout << "Sensorwert IR3: " << irValues[3] << endl;
+
+    if (isOnLine(irValues[3])) {
+        leftMotor->setVelocity(0.0);  // Motoren stoppen
+        rightMotor->setVelocity(0.0);
+        emit(emitter, "line_detected");
+        cout << "Linie erkannt, stoppe für 1 Sekunde..." << endl;
+        
+        // Warten für 1 Sekunde, während der Roboter angehalten bleibt
+        double stopTime = robot->getTime() + 1.0;
+        while (robot->getTime() < stopTime) {
+            robot->step(TIME_STEP);
+        }
+
+        // Nach der Pause, den Roboter wieder drehen lassen
+        leftMotor->setVelocity(1.0);
+        rightMotor->setVelocity(-1.0);
+        cout << "Roboter dreht nach der Pause..." << endl;
+        
+        stopTime = robot->getTime() + 1.0;
+        while (robot->getTime() < stopTime) {
+            robot->step(TIME_STEP);
+        }
+    }
+}
+
+
 int main(int argc, char **argv) {
   cout << "Starting AutomotiveController" << endl;
   Robot *robot = new Robot();
@@ -79,36 +112,7 @@ int main(int argc, char **argv) {
   receive(receiver, emitter);
   leftMotor->setVelocity(1.0);
   rightMotor->setVelocity(-1.0);
-  
-  double irValues[7];
-  for (int i = 0; i < 7; ++i) {
-    irValues[i] = ir[i]->getValue();
-  }
-
-  cout << "Sensorwert IR3: " << irValues[3] << endl;
-
-  if (isOnLine(irValues[3])) {
-    leftMotor->setVelocity(0.0);  // Motoren stoppen
-    rightMotor->setVelocity(0.0);
-    emit(emitter, "line_detected");
-    cout << "Linie erkannt, stoppe für 1 Sekunde..." << endl;
-    
-    // Warten für 1 Sekunde, während der Roboter angehalten bleibt
-    double stopTime = robot->getTime() + 1.0;
-    while (robot->getTime() < stopTime) {
-      robot->step(TIME_STEP);
-    }
-
-    // Nach der Pause, den Roboter wieder drehen lassen
-    leftMotor->setVelocity(1.0);
-    rightMotor->setVelocity(-1.0);
-    cout << "Roboter dreht nach der Pause..." << endl;
-    
-    stopTime = robot->getTime() + 1.0;
-    while (robot->getTime() < stopTime) {
-      robot->step(TIME_STEP);
-    }
-  } // Hier endet der if-Block
+  pointScanning(robot, ir, leftMotor, rightMotor, emitter, TIME_STEP);
 
 } // Hier endet der while-Block
 
