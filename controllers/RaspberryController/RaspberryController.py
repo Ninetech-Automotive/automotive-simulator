@@ -12,16 +12,26 @@ def main():
     receiver = robot.getDevice("ChildParentReceiver")
     receiver.enable(timestep)
     camera = robot.getDevice("CAM")
-    camera.enable(timestep)
+    #camera.enable(timestep)
 
-    communicator = Communicator(emitter, receiver)
+    communicator = Communicator(emitter, receiver, camera, timestep)
     object_detector = ObjectDetector(camera)
 
     communicator.ping()
 
     while robot.step(timestep) != -1:
         communicator.receive()
-        object_detector.detect_color()
+        robot.step(timestep)
+        if communicator.camera_enabled:
+            object_detector.detect_color()
+            robot.step(timestep)
+
+            camera.disable()
+            communicator.camera_enabled = False
+            #if object_detector.detect_color():
+                #camera.disable()
+                #communicator.camera_enabled = False
+            print("Camera disabled after color detection.")
 
 
 if __name__ == "__main__":

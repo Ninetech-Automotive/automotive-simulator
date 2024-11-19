@@ -9,8 +9,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 WorldInfo {
 }
 Viewpoint {
-  orientation 0.12762025964563603 0.22397925587866904 -0.9662020297349919 0.8094071518129917
-  position -3.059741752214226 4.951738577989566 1.18906093291287
+  orientation 0.1895179813763398 0.0628029002359741 -0.9798666901456483 2.3768042307455066
+  position 0.5428056672520054 2.89289056626013 0.3301697119416203
 }
 TexturedBackgroundLight {
 }
@@ -39,10 +39,6 @@ RectangleArena {
   }
 }
 DEF Automotive E-puck {
-  hidden translation_1 0 0.026 0.02
-  hidden rotation_1 0 1 0 3.220991159970477
-  hidden translation_2 0 -0.025999999999999995 0.02
-  hidden rotation_2 0 1 0 4.563756200182349
   translation -0.20261600039333125 2.3122699994867024 -6.396199560228417e-05
   rotation -3.5695103788619393e-09 -2.958173406613844e-09 -1 0.5300000037279586
   name "Automotive"
@@ -76,43 +72,43 @@ DEF Automotive E-puck {
       controller "RaspberryController"
     }
     DistanceSensor {
-      translation 0.01 -0.03 0.01
+      translation 0.04 -0.03 0.01
       rotation 0 1 0 1.5708
       name "IR0"
       type "infra-red"
     }
     DistanceSensor {
-      translation 0.01 -0.02 0.01
+      translation 0.04 -0.02 0.01
       rotation 0 1 0 1.5708
       name "IR1"
       type "infra-red"
     }
     DistanceSensor {
-      translation 0.01 -0.01 0.01
+      translation 0.04 -0.01 0.01
       rotation 0 1 0 1.5708
       name "IR2"
       type "infra-red"
     }
     DistanceSensor {
-      translation 0.01 0 0.01
+      translation 0.04 0 0.01
       rotation 0 1 0 1.5708
       name "IR3"
       type "infra-red"
     }
     DistanceSensor {
-      translation 0.01 0.01 0.01
+      translation 0.04 0.01 0.01
       rotation 0 1 0 1.5708
       name "IR4"
       type "infra-red"
     }
     DistanceSensor {
-      translation 0.01 0.02 0.01
+      translation 0.04 0.02 0.01
       rotation 0 1 0 1.5708
       name "IR5"
       type "infra-red"
     }
     DistanceSensor {
-      translation 0.01 0.03 0.00999996
+      translation 0.04 0.03 0.00999996
       rotation 0 1 0 1.5708
       name "IR6"
       type "infra-red"
