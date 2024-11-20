@@ -27,6 +27,8 @@ class Communicator:
             print(self.angles)
         elif message == "point_scanning_finished":
             self.choose_line()
+        elif message == "turned_to_target_line":
+            self.start_line_following()
 
     def receive(self):
         if self.receiver.getQueueLength() != 0:

@@ -255,6 +255,7 @@ void turnToLineX(Robot* robot, DistanceSensor* ir[], Motor* leftMotor, Motor* ri
             if (lineIndex == targetLine) {
               leftMotor->setVelocity(0.0);  // Motoren stoppen
               rightMotor->setVelocity(0.0);
+              emit(emitter, "turned_to_target_line");
               break;
             }
             
