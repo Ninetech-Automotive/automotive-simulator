@@ -18,6 +18,7 @@ def main():
     object_detector = ObjectDetector(camera)
 
     communicator.ping()
+    communicator.start_line_following()
 
     while robot.step(timestep) != -1:
         communicator.receive()

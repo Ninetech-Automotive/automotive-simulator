@@ -16,6 +16,10 @@ class Communicator:
             self.handlePong()
         elif message == "line_detected":  # Wenn "line_detected" empfangen wird, Kamera aktivieren
             self.on_line_detected()
+        elif message == "on_waypoint":
+            self.start_point_scanning()
+        elif message == "point_scanning_finished":
+            self.choose_line()
 
     def receive(self):
         if self.receiver.getQueueLength() != 0:
@@ -36,6 +40,15 @@ class Communicator:
 
     def ping(self):
         self.emit("ping")
+        
+    def start_line_following(self):
+        self.emit("follow_line")
+        
+    def start_point_scanning(self):
+        self.emit("scan_point")
+        
+    def choose_line(self):
+        self.emit(line_choosen)
 
     def handlePong(self):
         print("Ping answer received")
