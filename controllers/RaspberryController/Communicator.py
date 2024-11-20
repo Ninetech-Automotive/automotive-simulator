@@ -1,3 +1,5 @@
+import random
+
 class Communicator:
 
     def __init__(self, emitter, receiver, camera,timestep):
@@ -6,6 +8,7 @@ class Communicator:
         self.camera = camera
         self.camera_enabled = False
         self.timestep = timestep
+        self.angles = []
 
     def emit(self, message):
         self.emitter.send(message)
@@ -14,10 +17,14 @@ class Communicator:
     def onReceive(self, message):
         if message == "pong":
             self.handlePong()
-        elif message == "line_detected":  # Wenn "line_detected" empfangen wird, Kamera aktivieren
+        elif message == "line_detected":
             self.on_line_detected()
         elif message == "on_waypoint":
             self.start_point_scanning()
+        elif message.startswith("angle:"):
+            angle = message[6:]
+            self.angles.append(angle)
+            print(self.angles)
         elif message == "point_scanning_finished":
             self.choose_line()
 
@@ -48,7 +55,11 @@ class Communicator:
         self.emit("scan_point")
         
     def choose_line(self):
-        self.emit(line_choosen)
+        number_of_angles = len(self.angles)
+        line_choosen = str(random.randint(1, number_of_angles)) #choose a random line for now
+        self.emit(f"target_line:{line_choosen}")
+        print(line_choosen)
+        self.angles.clear()
 
     def handlePong(self):
         print("Ping answer received")

@@ -26,6 +26,9 @@ void followLine(Robot* robot, DistanceSensor* ir[], Motor* leftMotor, Motor* rig
 // Funktionsprototyp für followLine
 void pointScanning(Robot* robot, DistanceSensor* ir[], Motor* leftMotor, Motor* rightMotor, Emitter* emitter, const int TIME_STEP);
 
+//Funktionsprototyp für turnToLineX
+void turnToLineX(Robot* robot, DistanceSensor* ir[], Motor* leftMotor, Motor* rightMotor, Emitter* emitter, const int TIME_STEP, const int targetLine);
+
 
 // Hilfsfunktion, um zu prüfen, ob der Sensor auf der Linie ist
 bool isOnLine(double value) {
@@ -46,7 +49,14 @@ void onReceive(Emitter *emitter, string message, Robot* robot, DistanceSensor* i
   } else if (message == "scan_point") {
     // Wenn "scan_point" empfangen wird, rufe die pointScanning-Funktion auf
     pointScanning(robot, ir, leftMotor, rightMotor, emitter, TIME_STEP);
-  }
+  } else if (message.rfind("target_line:", 0) == 0) {  // Checks if message starts with "target_line:"
+    // Code to handle "target_line:" message
+    string targetLineStr = message.substr(12); // Extract the part after "target_line:"
+    cout << "Target line data received: " << targetLineStr << endl;
+    int targetLine = std::stoi(targetLineStr);
+    cout << targetLine << endl;
+    turnToLineX(robot, ir, leftMotor, rightMotor, emitter, TIME_STEP, targetLine);
+    }
 }
 
 void receive(Receiver *receiver, Emitter *emitter, Robot* robot, DistanceSensor* ir[], Motor* leftMotor, Motor* rightMotor, double& leftSpeed, double& rightSpeed, double currentTime, double& turnEndTime) {
@@ -189,6 +199,9 @@ void pointScanning(Robot* robot, DistanceSensor* ir[], Motor* leftMotor, Motor* 
                 break;  // Schleife beenden, wenn 360° erreicht wurden
             }
             
+            string message = "angle:" + to_string(angle);
+            emit(emitter, message);
+            
             angleArray[angleIndex] = angle;
             angleIndex++;
 
@@ -220,6 +233,43 @@ void pointScanning(Robot* robot, DistanceSensor* ir[], Motor* leftMotor, Motor* 
     }
 }
 
+void turnToLineX(Robot* robot, DistanceSensor* ir[], Motor* leftMotor, Motor* rightMotor, Emitter* emitter, const int TIME_STEP, const int targetLine) {
+    double irValues[7];
+    int lineIndex = 0;
+    
+    leftMotor->setVelocity(1.0); 
+    rightMotor->setVelocity(-1.0);
+    while (true) {
+        // Sensorwerte aktualisieren
+        for (int i = 0; i < 7; ++i) {
+            irValues[i] = ir[i]->getValue();
+        }
+
+        //cout << "Sensorwert IR3: " << irValues[3] << endl;
+
+        // Wenn der mittlere Sensor (IR3) auf der Linie ist
+        if (isOnLine(irValues[3])) {
+            
+            lineIndex++;
+            
+            if (lineIndex == targetLine) {
+              leftMotor->setVelocity(0.0);  // Motoren stoppen
+              rightMotor->setVelocity(0.0);
+              break;
+            }
+            
+            double stopTime = robot->getTime() + 1.0;
+            while (robot->getTime() < stopTime) {
+                robot->step(TIME_STEP);
+            }
+            
+            continue;  
+        }
+        
+        // Schritte fortsetzen
+        robot->step(TIME_STEP);
+    }
+}
 
 int main(int argc, char **argv) {
   cout << "Starting AutomotiveController" << endl;
