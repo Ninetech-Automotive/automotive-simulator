@@ -20,6 +20,7 @@ class ObjectDetector:
         color_tolerance = 40
 
         image = self.camera.getImageArray()
+        print("image taken")
 
         width = self.camera.getWidth()
         height = self.camera.getHeight()
@@ -47,8 +48,11 @@ class ObjectDetector:
                     red, green, blue, obstacle_color, color_tolerance
                 ):
                     matching_obstacle_pixel_count += 1
-
+                    
+        print(matching_cone_pixel_count)
         if matching_cone_pixel_count > 100:
-            print(f"cone detected")
+            print(f"cone detected {matching_cone_pixel_count}")
+            return True
         if matching_obstacle_pixel_count > 100:
             print(f"obstacle detected")
+        return False
