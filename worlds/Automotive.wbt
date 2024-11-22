@@ -9,8 +9,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 WorldInfo {
 }
 Viewpoint {
-  orientation 0.07150527589619854 0.016957508001863783 -0.9972960635846184 2.2977300652194024
-  position 1.2230912574814856 3.6964897101702636 0.7482106752255671
+  orientation 0.035662447101566165 -0.01327440867978535 -0.999275727685272 3.176440350445447
+  position 0.30473019595738743 2.3062362746583265 0.058136386121058925
 }
 TexturedBackgroundLight {
   castShadows FALSE
@@ -45,6 +45,14 @@ DEF Automotive E-puck {
   name "Automotive"
   controller "AutomotiveController"
   groundSensorsSlot [
+    DistanceSensor {
+      translation 0 0 0.05
+      name "cone_sensor"
+    }
+    DistanceSensor {
+      translation 0 0 0.005
+      name "Obstacle_Sensor"
+    }
     Emitter {
       name "ChildParentEmitter"
     }
