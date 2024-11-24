@@ -51,7 +51,7 @@ DEF Automotive E-puck {
     }
     DistanceSensor {
       translation 0 0 0.005
-      name "Obstacle_Sensor"
+      name "obstacle_sensor"
     }
     Emitter {
       name "ChildParentEmitter"

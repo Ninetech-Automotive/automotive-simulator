@@ -21,7 +21,7 @@ const double WHEEL_RADIUS = 22.5; // in mm
 const double AXLE_LENGTH = 52;    // in mm
 
 // Funktionsprototyp für followLine
-void followLine(Robot *robot, DistanceSensor *ir[], Motor *leftMotor, Motor *rightMotor, double &leftSpeed, double &rightSpeed, double currentTime, double &turnEndTime, Emitter *emitter);
+void followLine(Robot *robot, DistanceSensor *ir[], DistanceSensor *coneSensor, Motor *leftMotor, Motor *rightMotor, double &leftSpeed, double &rightSpeed, double currentTime, double &turnEndTime, Emitter *emitter);
 
 // Funktionsprototyp für followLine
 void pointScanning(Robot *robot, DistanceSensor *ir[], Motor *leftMotor, Motor *rightMotor, Emitter *emitter, const int TIME_STEP);
@@ -41,7 +41,7 @@ void emit(Emitter *emitter, string message)
     cout << "child sent message " << message << endl;
 }
 
-void onReceive(Emitter *emitter, string message, Robot *robot, DistanceSensor *ir[], Motor *leftMotor, Motor *rightMotor, double &leftSpeed, double &rightSpeed, double currentTime, double &turnEndTime)
+void onReceive(Emitter *emitter, string message, Robot *robot, DistanceSensor *ir[], DistanceSensor *coneSensor, Motor *leftMotor, Motor *rightMotor, double &leftSpeed, double &rightSpeed, double currentTime, double &turnEndTime)
 {
     if (message == "ping")
     {
@@ -50,7 +50,8 @@ void onReceive(Emitter *emitter, string message, Robot *robot, DistanceSensor *i
     else if (message == "follow_line")
     {
         // Wenn "follow_line" empfangen wird, rufe die followLine-Funktion auf
-        followLine(robot, ir, leftMotor, rightMotor, leftSpeed, rightSpeed, currentTime, turnEndTime, emitter);
+        followLine(robot, ir, coneSensor, leftMotor, rightMotor, leftSpeed, rightSpeed, currentTime, turnEndTime, emitter);
+
     }
     else if (message == "scan_point")
     {
@@ -68,7 +69,7 @@ void onReceive(Emitter *emitter, string message, Robot *robot, DistanceSensor *i
     }
 }
 
-void receive(Receiver *receiver, Emitter *emitter, Robot *robot, DistanceSensor *ir[], Motor *leftMotor, Motor *rightMotor, double &leftSpeed, double &rightSpeed, double currentTime, double &turnEndTime)
+void receive(Receiver *receiver, Emitter *emitter, Robot *robot, DistanceSensor *ir[], DistanceSensor *coneSensor, Motor *leftMotor, Motor *rightMotor, double &leftSpeed, double &rightSpeed, double currentTime, double &turnEndTime)
 {
     if (receiver->getQueueLength() > 0)
     {
@@ -79,23 +80,52 @@ void receive(Receiver *receiver, Emitter *emitter, Robot *robot, DistanceSensor 
 
         cout << "child received message " << message << endl;
 
-        onReceive(emitter, message, robot, ir, leftMotor, rightMotor, leftSpeed, rightSpeed, currentTime, turnEndTime);
+        onReceive(emitter, message, robot, ir, coneSensor, leftMotor, rightMotor, leftSpeed, rightSpeed, currentTime, turnEndTime);
     }
 }
 
-void followLine(Robot *robot, DistanceSensor *ir[], Motor *leftMotor, Motor *rightMotor, double &leftSpeed, double &rightSpeed, double currentTime, double &turnEndTime, Emitter *emitter)
+void followLine(Robot *robot, DistanceSensor *ir[], DistanceSensor *coneSensor, Motor *leftMotor, Motor *rightMotor, double &leftSpeed, double &rightSpeed, double currentTime, double &turnEndTime, Emitter *emitter)
 {
     double irValues[7];
+    
+    // coneSensor aktivieren
+    coneSensor->enable(TIME_STEP);
 
     // Continue following the line until a waypoint is detected
     while (true)
     {
-        // Get the sensor data
+        // Get the coneSensor date
+        double pyloneDistance = coneSensor->getValue();
+        std::cout << "Pylone distance is: " << pyloneDistance << std::endl;
+        // Get the IRsensor data
         for (int i = 0; i < 7; ++i)
         {
             irValues[i] = ir[i]->getValue();
         }
+        
+        // Check if there's a cone
+        if (pyloneDistance < 980)
+        {
+            // Signal to RPI "cone_detected"
+            emit(emitter, "cone_detected");
+            
+            //turn arround
+            leftMotor->setVelocity(1.0);
+            rightMotor->setVelocity(-1.0);
+            
+            // Wait for 1 second, while robot continues to drive
+            double stopTime = robot->getTime() + 4.5; // 4.5 Sekunden
+            while (robot->getTime() < stopTime)
+            {
+                robot->step(TIME_STEP);
+            }
 
+            // Stop motors after 1 second
+            leftMotor->setVelocity(0.0);
+            rightMotor->setVelocity(0.0);
+            continue;
+        }
+        
         // Wait till Robot has turned
         if (currentTime < turnEndTime)
         {
@@ -124,7 +154,6 @@ void followLine(Robot *robot, DistanceSensor *ir[], Motor *leftMotor, Motor *rig
 
             // Signal to RPI "on_waypoint"
             emit(emitter, "on_waypoint");
-            std::cout << "child emitted 'on_waypoint'" << std::endl;
             break;
         }
         else if (isOnLine(irValues[3]))
@@ -328,6 +357,12 @@ int main(int argc, char **argv)
         ir[i] = robot->getDistanceSensor(ir_sensors[i]);
         ir[i]->enable(TIME_STEP);
     }
+    
+    // Sensor für Hinderniss initialisieren
+    DistanceSensor *obstacleSensor = robot->getDistanceSensor("obstacle_sensor");
+    
+    // Sensor für Pylone initalisieren
+    DistanceSensor *coneSensor = robot->getDistanceSensor("cone_sensor");
 
     // Motoren initialisieren
     Motor *leftMotor = robot->getMotor("left wheel motor");
@@ -349,7 +384,7 @@ int main(int argc, char **argv)
     while (robot->step(timeStep) != -1)
     {
         double currentTime = robot->getTime();
-        receive(receiver, emitter, robot, ir, leftMotor, rightMotor, leftSpeed, rightSpeed, currentTime, turnEndTime);
+        receive(receiver, emitter, robot, ir, coneSensor, leftMotor, rightMotor, leftSpeed, rightSpeed, currentTime, turnEndTime);
         // pointScanning(robot, ir, leftMotor, rightMotor, emitter, TIME_STEP);
 
         // followLine(robot, ir, leftMotor, rightMotor, leftSpeed, rightSpeed, currentTime, turnEndTime);
