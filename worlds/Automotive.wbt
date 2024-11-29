@@ -9,8 +9,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 WorldInfo {
 }
 Viewpoint {
-  orientation 0.07150527589619854 0.016957508001863783 -0.9972960635846184 2.2977300652194024
-  position 1.2230912574814856 3.6964897101702636 0.7482106752255671
+  orientation 0.03426193310572264 -0.01724619214590509 -0.999264073604333 3.39628005706218
+  position 0.08105945714078994 2.343476574933384 0.053546453397342215
 }
 TexturedBackgroundLight {
   castShadows FALSE
@@ -39,12 +39,44 @@ RectangleArena {
     }
   }
 }
+Solid {
+  translation -0.63595 1.62033 -1.11022e-15
+  rotation 0 0 -1 0.523596
+  children [
+    Transform {
+      scale 0.0005 0.0005 0.0005
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 1 0 0
+            metalness 0
+          }
+          geometry Mesh {
+            url [
+              "../assets/01-01-Hindernis/Hindernis-01-01-A.obj"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+  name "Hindernis Rot(2)"
+}
 DEF Automotive E-puck {
   translation -0.19947 2.47346 -6.3962e-05
   rotation 5.9525e-10 1.60483e-09 1 -1.5771953071795863
   name "Automotive"
   controller "AutomotiveController"
   groundSensorsSlot [
+    DistanceSensor {
+      translation 0 0 0.05
+      name "cone_sensor"
+    }
+    DistanceSensor {
+      translation 0 0 0.005
+      name "obstacle_sensor"
+      type "infra-red"
+    }
     Emitter {
       name "ChildParentEmitter"
     }
@@ -167,31 +199,8 @@ DirectionPanel {
   ]
 }
 Solid {
-  translation -0.927286 1.92669 0
-  rotation 0 0 1 -1.047195307179586
-  children [
-    Transform {
-      scale 0.0005 0.0005 0.0005
-      children [
-        Shape {
-          appearance PBRAppearance {
-            roughness 1
-            metalness 0
-          }
-          geometry Mesh {
-            url [
-              "../assets/01-01-Hindernis/Hindernis-01-01-A.obj"
-            ]
-          }
-        }
-      ]
-    }
-  ]
-  name "Hindernis Weiss"
-}
-Solid {
-  translation -1.41461 0.257773 6.66134e-16
-  rotation 0 0 1 -0.785395307179586
+  translation 0.44221 1.97624 3.10863e-15
+  rotation 0 0 1 -2.094395307179586
   children [
     Transform {
       scale 0.0005 0.0005 0.0005
@@ -199,7 +208,6 @@ Solid {
         Shape {
           appearance PBRAppearance {
             baseColor 1 0 0
-            roughness 1
             metalness 0
           }
           geometry Mesh {
@@ -212,4 +220,27 @@ Solid {
     }
   ]
   name "Hindernis Rot"
+}
+Solid {
+  translation -1.15965 1.78348 -8.21565e-15
+  rotation 0 0 1 -1.047195307179586
+  children [
+    Transform {
+      scale 0.0005 0.0005 0.0005
+      children [
+        Shape {
+          appearance PBRAppearance {
+            baseColor 1 0 0
+            metalness 0
+          }
+          geometry Mesh {
+            url [
+              "../assets/01-01-Hindernis/Hindernis-01-01-A.obj"
+            ]
+          }
+        }
+      ]
+    }
+  ]
+  name "Hindernis Rot(1)"
 }
