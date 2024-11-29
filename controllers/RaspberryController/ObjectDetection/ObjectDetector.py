@@ -1,8 +1,12 @@
+from Navigation.WaypointStatus import WaypointStatus
+from Navigation.EdgeStatus import EdgeStatus
+
 class ObjectDetector:
 
-    def __init__(self, camera):
+    def __init__(self, camera, timestep):
         self.camera = camera
-
+        self.timestep = timestep
+ 
     def is_target_color(self, r, g, b, target_color, tolerance):
         target_r, target_g, target_b = target_color
         # Check if the pixel is within the color tolerance
@@ -13,6 +17,8 @@ class ObjectDetector:
         )
 
     def detect_color(self):
+        self.camera.enable(self.timestep)
+
         strip_width = 400
         strip_height = 500
         cone_color = [228, 162, 55]
@@ -49,10 +55,12 @@ class ObjectDetector:
                 ):
                     matching_obstacle_pixel_count += 1
                     
-        print(matching_cone_pixel_count)
+        waypoint_status = WaypointStatus.FREE
+        edge_status = EdgeStatus.FREE
         if matching_cone_pixel_count > 100:
-            print(f"cone detected {matching_cone_pixel_count}")
-            return True
+            waypoint_status = WaypointStatus.POTENTIALLY_BLOCKED
         if matching_obstacle_pixel_count > 100:
-            print(f"obstacle detected")
-        return False
+            edge_status = EdgeStatus.POTENTIALLY_OBSTRUCTED
+
+        self.camera.disable()
+        return waypoint_status, edge_status

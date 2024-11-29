@@ -1,6 +1,7 @@
 from controller import Robot
 from Communicator import Communicator
-from ObjectDetector import ObjectDetector
+from ObjectDetection.ObjectDetector import ObjectDetector
+from Navigation.NavigationController import NavigationController
 
 
 def main():
@@ -14,25 +15,17 @@ def main():
     camera = robot.getDevice("CAM")
     #camera.enable(timestep)
 
-    communicator = Communicator(emitter, receiver, camera, timestep)
-    object_detector = ObjectDetector(camera)
+    object_detector = ObjectDetector(camera, timestep)
+    navigation_controller = NavigationController(communicator, object_detector)
+    communicator = Communicator(emitter, receiver, navigation_controller)
 
     communicator.ping()
-    communicator.start_line_following()
+    navigation_controller.start()
 
     while robot.step(timestep) != -1:
+        robot.step(timestep)
         communicator.receive()
         robot.step(timestep)
-        if communicator.camera_enabled:
-            object_detector.detect_color()
-            robot.step(timestep)
-
-            camera.disable()
-            communicator.camera_enabled = False
-            #if object_detector.detect_color():
-                #camera.disable()
-                #communicator.camera_enabled = False
-            print("Camera disabled after color detection.")
 
 
 if __name__ == "__main__":
