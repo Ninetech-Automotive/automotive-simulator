@@ -16,6 +16,7 @@ class NavigationController(CommunicationReceiver):
         pass
 
     def start(self, target_waypoint: str):
+        print("[pi    ] target set to ", target_waypoint)
         self.graph.set_target_waypoint(target_waypoint)
         self.angle_ids.append("S")
         self.on_point_scanning_finished()
