@@ -3,9 +3,10 @@ from Navigation.EdgeStatus import EdgeStatus
 
 class ObjectDetector:
 
-    def __init__(self, camera, timestep):
+    def __init__(self, camera, timestep, robot):
         self.camera = camera
         self.timestep = timestep
+        self.robot = robot
  
     def is_target_color(self, r, g, b, target_color, tolerance):
         target_r, target_g, target_b = target_color
@@ -18,6 +19,7 @@ class ObjectDetector:
 
     def detect_color(self):
         self.camera.enable(self.timestep)
+        self.robot.step(self.timestep)
 
         strip_width = 400
         strip_height = 500
@@ -26,7 +28,6 @@ class ObjectDetector:
         color_tolerance = 40
 
         image = self.camera.getImageArray()
-        print("image taken")
 
         width = self.camera.getWidth()
         height = self.camera.getHeight()
@@ -55,8 +56,8 @@ class ObjectDetector:
                 ):
                     matching_obstacle_pixel_count += 1
                     
-        waypoint_status = WaypointStatus.FREE
-        edge_status = EdgeStatus.FREE
+        waypoint_status = WaypointStatus.POTENTIALLY_FREE
+        edge_status = EdgeStatus.POTENTIALLY_FREE
         if matching_cone_pixel_count > 100:
             waypoint_status = WaypointStatus.POTENTIALLY_BLOCKED
         if matching_obstacle_pixel_count > 100:

@@ -1,8 +1,7 @@
 from Navigation.Edge import Edge
-from Navigation.Waypoint import Waypoint
 
 class Angle:
-    def __init__(self, waypoint: Waypoint, value: float, edge: Edge):
+    def __init__(self, waypoint, value: float, edge: Edge):
         self.waypoint = waypoint
         self.value = value
         self.edge = edge
@@ -15,3 +14,12 @@ class Angle:
 
     def get_waypoint(self):
         return self.waypoint
+    
+    def __str__(self):
+        return f"""
+        Angle[
+            Waypoint:{self.waypoint}
+            Value:{self.value}
+            Edge:{self.edge}
+        ]
+        """

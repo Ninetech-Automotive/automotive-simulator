@@ -6,7 +6,13 @@ class Edge:
         self.length = 1
 
     def get_weight(self) -> int:
-        return 0
+        return self.status.value + (self.length * 10)
+    
+    def get_status(self):
+        return
     
     def set_status(self, status):
         self.status = status
+
+    def __str__(self):
+        return f"Edge[status:{self.status};Length:{self.length}]"

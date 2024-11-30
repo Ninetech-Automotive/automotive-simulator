@@ -1,6 +1,6 @@
 from enum import Enum
 
-class WaypointStatus(Enum):
+class WaypointStatus(str, Enum):
     UNKNOWN = "UNKNOWN"
     BLOCKED = "BLOCKED"
     FREE = "FREE"

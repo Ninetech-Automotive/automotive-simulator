@@ -1,8 +1,8 @@
 from enum import Enum
 
-class EdgeStatus(Enum):
-    UNKNOWN = 100
-    OBSTRUCTED = 80
-    FREE = 50
+class EdgeStatus(int, Enum):
+    UNKNOWN = 80
+    OBSTRUCTED = 100
+    FREE = 0
     POTENTIALLY_OBSTRUCTED = 90
-    POTENTIALLY_FREE = 55
+    POTENTIALLY_FREE = 10
