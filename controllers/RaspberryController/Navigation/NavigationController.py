@@ -26,10 +26,10 @@ class NavigationController(CommunicationReceiver):
         if (not self.graph.has_reached_target_waypoint()):
             self.communicator.emit("scan_point")
         else:
-            print('target reached')
+            print('[pi    ] target reached')
 
     def on_angle(self, angle_value):
-        waypoint_status, edge_status = self.object_detector.detect_color()
+        waypoint_status, edge_status = self.object_detector.detect()
         angle = self.graph.update_waypoint_from_angle(angle_value, waypoint_status, edge_status)
         self.angle_ids.append(angle.get_waypoint().get_id())
         
