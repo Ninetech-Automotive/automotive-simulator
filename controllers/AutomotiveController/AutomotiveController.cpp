@@ -37,8 +37,8 @@ bool isOnLine(double value)
 
 void emit(Emitter *emitter, string message)
 {
+    cout << "[µC->pi] " << message << endl;
     emitter->send(message.c_str(), message.size() + 1);
-    cout << "child sent message " << message << endl;
 }
 
 void onReceive(Emitter *emitter, string message, Robot *robot, DistanceSensor *ir[], DistanceSensor *coneSensor, DistanceSensor *obstacleSensor, Motor *leftMotor, Motor *rightMotor, double &leftSpeed, double &rightSpeed, double currentTime, double &turnEndTime)
@@ -62,9 +62,7 @@ void onReceive(Emitter *emitter, string message, Robot *robot, DistanceSensor *i
     { // Checks if message starts with "target_line:"
         // Code to handle "target_line:" message
         string targetLineStr = message.substr(12); // Extract the part after "target_line:"
-        cout << "Target line data received: " << targetLineStr << endl;
         int targetLine = std::stoi(targetLineStr);
-        cout << targetLine << endl;
         turnToLineX(robot, ir, leftMotor, rightMotor, emitter, TIME_STEP, targetLine);
     }
 }
@@ -77,8 +75,6 @@ void receive(Receiver *receiver, Emitter *emitter, Robot *robot, DistanceSensor 
         const char *messageChars = static_cast<const char *>(data);
         std::string message(messageChars);
         receiver->nextPacket();
-
-        cout << "child received message " << message << endl;
 
         onReceive(emitter, message, robot, ir, coneSensor, obstacleSensor, leftMotor, rightMotor, leftSpeed, rightSpeed, currentTime, turnEndTime);
     }
@@ -102,7 +98,6 @@ void followLine(Robot *robot, DistanceSensor *ir[], DistanceSensor *coneSensor, 
         
         // Get the obstacleSensor data
         double obstacleDistance = obstacleSensor->getValue();
-        std::cout << "obstacle Distance: " << obstacleDistance << std::endl;
 
         // Get the IRsensor data
         for (int i = 0; i < 7; ++i)
@@ -174,7 +169,6 @@ void followLine(Robot *robot, DistanceSensor *ir[], DistanceSensor *coneSensor, 
         // Check if all Sensors are on the Waypoint (Waypoint detection)
         if (std::all_of(std::begin(irValues), std::end(irValues), isOnLine))
         {
-            std::cout << "Waypoint detected" << std::endl;
             // Set Velocity
             leftMotor->setVelocity(leftSpeed * 0.7);
             rightMotor->setVelocity(rightSpeed * 0.7);
@@ -196,39 +190,33 @@ void followLine(Robot *robot, DistanceSensor *ir[], DistanceSensor *coneSensor, 
         }
         else if (isOnLine(irValues[3]))
         { // Center sensor on line
-            std::cout << "Center sensor on line, moving fast" << std::endl;
             leftSpeed = MAX_SPEED;
             rightSpeed = MAX_SPEED;
         }
         else if (isOnLine(irValues[2]))
         { // Slight adjustment (left)
-            std::cout << "Left inner sensor on line, steering slightly right" << std::endl;
             leftSpeed = MAX_SPEED;
             rightSpeed = MAX_SPEED * 0.7;
         }
         else if (isOnLine(irValues[4]))
         { // Slight adjustment (right)
-            std::cout << "Right inner sensor on line, steering slightly left" << std::endl;
             leftSpeed = MAX_SPEED * 0.7;
             rightSpeed = MAX_SPEED;
         }
         else if (isOnLine(irValues[0]) || isOnLine(irValues[1]))
         { // Strong left turn
-            std::cout << "Left edge sensor on line, turning sharply right" << std::endl;
             leftSpeed = MAX_SPEED;
             rightSpeed = MAX_SPEED * 0.5;
             turnEndTime = currentTime + TURN_DURATION;
         }
         else if (isOnLine(irValues[5]) || isOnLine(irValues[6]))
         { // Strong right turn
-            std::cout << "Right edge sensor on line, turning sharply left" << std::endl;
             leftSpeed = MAX_SPEED * 0.5;
             rightSpeed = MAX_SPEED;
             turnEndTime = currentTime + TURN_DURATION;
         }
         else
         {
-            std::cout << "No sensor on line, searching..." << std::endl;
             leftSpeed = MAX_SPEED * 0.3;
             rightSpeed = MAX_SPEED * 0.6;
         }
@@ -256,7 +244,6 @@ double calculateTurnAngle(double motorSpeed, double wheelRadius, double axleLeng
 
     // Angle in degrees
     double thetaDegrees = theta * (180.0 / M_PI);
-    cout << "Winkel: " << thetaDegrees << endl;
     return thetaDegrees;
 }
 
@@ -280,8 +267,6 @@ void pointScanning(Robot *robot, DistanceSensor *ir[], Motor *leftMotor, Motor *
             irValues[i] = ir[i]->getValue();
         }
 
-        // cout << "Sensorwert IR3: " << irValues[3] << endl;
-
         // Wenn der mittlere Sensor (IR3) auf der Linie ist
         if (isOnLine(irValues[3]))
         {
@@ -296,9 +281,14 @@ void pointScanning(Robot *robot, DistanceSensor *ir[], Motor *leftMotor, Motor *
             // Überprüfen, ob der Roboter 360° gedreht hat
             if (angle >= 360.0)
             {
-                cout << "Roboter hat sich 360° gedreht, Stoppe." << endl;
                 emit(emitter, "point_scanning_finished");
                 break; // Schleife beenden, wenn 360° erreicht wurden
+            }
+
+            // Verhindert, dass eine Linie bei 0° und 360° doppel gezählt wird
+            if (angle >= 340.0)
+            {
+                continue;
             }
 
             string message = "angle:" + to_string(angle);
@@ -308,7 +298,6 @@ void pointScanning(Robot *robot, DistanceSensor *ir[], Motor *leftMotor, Motor *
             angleIndex++;
 
             emit(emitter, "line_detected");
-            cout << "Linie erkannt, stoppe für 1 Sekunde..." << endl;
 
             // Warten für 1 Sekunde, während der Roboter angehalten bleibt
             double stopTime = robot->getTime() + 1.0;
@@ -321,7 +310,6 @@ void pointScanning(Robot *robot, DistanceSensor *ir[], Motor *leftMotor, Motor *
             leftMotor->setVelocity(1.0);
             rightMotor->setVelocity(-1.0);
             startTurnTime = robot->getTime();
-            cout << "Roboter dreht nach der Pause..." << endl;
 
             stopTime = robot->getTime() + 1.0;
             while (robot->getTime() < stopTime)
@@ -352,13 +340,9 @@ void turnToLineX(Robot *robot, DistanceSensor *ir[], Motor *leftMotor, Motor *ri
             irValues[i] = ir[i]->getValue();
         }
 
-        // cout << "Sensorwert IR3: " << irValues[3] << endl;
-
         // Wenn der mittlere Sensor (IR3) auf der Linie ist
         if (isOnLine(irValues[3]))
         {
-
-            lineIndex++;
 
             if (lineIndex == targetLine)
             {
@@ -374,6 +358,7 @@ void turnToLineX(Robot *robot, DistanceSensor *ir[], Motor *leftMotor, Motor *ri
                 robot->step(TIME_STEP);
             }
 
+            lineIndex++;
             continue;
         }
 
@@ -384,7 +369,6 @@ void turnToLineX(Robot *robot, DistanceSensor *ir[], Motor *leftMotor, Motor *ri
 
 int main(int argc, char **argv)
 {
-    cout << "Starting AutomotiveController" << endl;
     Robot *robot = new Robot();
 
     // IR-Sensoren initialisieren
