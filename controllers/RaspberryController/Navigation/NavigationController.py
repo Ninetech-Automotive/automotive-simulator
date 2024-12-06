@@ -31,6 +31,7 @@ class NavigationController(CommunicationReceiver):
 
     def on_angle(self, angle_value):
         waypoint_status, edge_status = self.object_detector.detect()
+        print(f"[pi    ] waypoint_status: {waypoint_status}, edge_status: {edge_status.name}")
         angle = self.graph.update_waypoint_from_angle(angle_value, waypoint_status, edge_status)
         self.angle_ids.append(angle.get_waypoint().get_id())
         

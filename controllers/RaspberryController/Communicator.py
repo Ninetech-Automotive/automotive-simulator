@@ -1,4 +1,3 @@
-import random
 from CommunicationReceiver import CommunicationReceiver
 
 class Communicator:

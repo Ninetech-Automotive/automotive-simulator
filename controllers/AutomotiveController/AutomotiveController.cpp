@@ -297,8 +297,6 @@ void pointScanning(Robot *robot, DistanceSensor *ir[], Motor *leftMotor, Motor *
             angleArray[angleIndex] = angle;
             angleIndex++;
 
-            emit(emitter, "line_detected");
-
             // Warten für 1 Sekunde, während der Roboter angehalten bleibt
             double stopTime = robot->getTime() + 1.0;
             while (robot->getTime() < stopTime)

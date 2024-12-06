@@ -3,6 +3,7 @@ from Communicator import Communicator
 from ObjectDetection.ObjectDetector import ObjectDetector
 from ObjectDetection.ColorDetector import ColorDetector
 from Navigation.NavigationController import NavigationController
+from CommunicationReceiver import CommunicationReceiver
 
 def main():
     robot = Robot()
@@ -15,7 +16,7 @@ def main():
 
     object_detector: ObjectDetector = ColorDetector(camera, timestep, robot)
     communicator = Communicator(emitter, receiver)
-    navigation_controller = NavigationController(communicator, object_detector)
+    navigation_controller: CommunicationReceiver = NavigationController(communicator, object_detector)
     communicator.set_communication_receiver(navigation_controller)
 
     communicator.ping()

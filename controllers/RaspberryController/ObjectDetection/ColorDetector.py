@@ -22,8 +22,8 @@ class ColorDetector(ObjectDetector):
         self.camera.enable(self.timestep)
         self.robot.step(self.timestep)
 
-        strip_width = 400
-        strip_height = 500
+        strip_width = self.camera.getWidth() // 2
+        strip_height = self.camera.getHeight()
         cone_color = [228, 162, 55]
         obstacle_color = [255, 0, 0]
         color_tolerance = 40
@@ -61,7 +61,7 @@ class ColorDetector(ObjectDetector):
         edge_status = EdgeStatus.POTENTIALLY_FREE
         if matching_cone_pixel_count > 100:
             waypoint_status = WaypointStatus.POTENTIALLY_BLOCKED
-        if matching_obstacle_pixel_count > 100:
+        if matching_obstacle_pixel_count > 50:
             edge_status = EdgeStatus.POTENTIALLY_OBSTRUCTED
 
         self.camera.disable()
