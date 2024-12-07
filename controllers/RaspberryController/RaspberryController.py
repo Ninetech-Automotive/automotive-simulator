@@ -4,18 +4,17 @@ from ObjectDetection.ObjectDetector import ObjectDetector
 from ObjectDetection.ColorDetector import ColorDetector
 from Navigation.NavigationController import NavigationController
 from CommunicationReceiver import CommunicationReceiver
+from WeBotsCommunicator import WeBotsCommunicator
+from ObjectDetection.Camera import Camera
+from ObjectDetection.WeBotsCamera import WeBotsCamera
 
 def main():
     robot = Robot()
     timestep = int(robot.getBasicTimeStep())
 
-    emitter = robot.getDevice("ParentChildEmitter")
-    receiver = robot.getDevice("ChildParentReceiver")
-    receiver.enable(timestep)
-    camera = robot.getDevice("CAM")
-
-    object_detector: ObjectDetector = ColorDetector(camera, timestep, robot)
-    communicator = Communicator(emitter, receiver)
+    camera: Camera = WeBotsCamera(timestep, robot)
+    object_detector: ObjectDetector = ColorDetector(camera)
+    communicator: Communicator = WeBotsCommunicator(timestep, robot)
     navigation_controller: CommunicationReceiver = NavigationController(communicator, object_detector)
     communicator.set_communication_receiver(navigation_controller)
 

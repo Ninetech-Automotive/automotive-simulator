@@ -6,7 +6,7 @@ class CommunicationReceiver(ABC):
         pass
 
     @abstractmethod
-    def on_angle(self, angle):
+    def on_angle(self, angle: str):
         pass
     
     @abstractmethod

@@ -4,10 +4,8 @@ from ObjectDetection.ObjectDetector import ObjectDetector
 
 class ColorDetector(ObjectDetector):
 
-    def __init__(self, camera, timestep, robot):
+    def __init__(self, camera):
         self.camera = camera
-        self.timestep = timestep
-        self.robot = robot
  
     def is_target_color(self, r, g, b, target_color, tolerance):
         target_r, target_g, target_b = target_color
@@ -19,19 +17,17 @@ class ColorDetector(ObjectDetector):
         )
 
     def detect(self):
-        self.camera.enable(self.timestep)
-        self.robot.step(self.timestep)
+        self.camera.enable()
 
-        strip_width = self.camera.getWidth() // 2
-        strip_height = self.camera.getHeight()
+        width = self.camera.get_width()
+        height = self.camera.get_height()
+        strip_width = width // 2
+        strip_height = height
         cone_color = [228, 162, 55]
         obstacle_color = [255, 0, 0]
         color_tolerance = 40
 
-        image = self.camera.getImageArray()
-
-        width = self.camera.getWidth()
-        height = self.camera.getHeight()
+        image = self.camera.get_image_array()
 
         # Calculate the horizontal strip bounds (centered in the middle)
         strip_start_x = (width - strip_width) // 2
