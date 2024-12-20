@@ -19,7 +19,13 @@ class NavigationController(CommunicationReceiver):
         print("[pi    ] target set to ", target_waypoint)
         self.graph.set_target_waypoint(target_waypoint)
         self.angle_ids.append("S")
-        self.on_point_scanning_finished()
+        self.next()
+
+    def next(self):
+        next_best_waypoint_id = self.graph.go_to_next_best_waypoint()
+        next_best_waypoint_index = self.angle_ids.index(next_best_waypoint_id)
+        self.angle_ids.clear()
+        self.communicator.emit(f"target_line:{next_best_waypoint_index}")
     
     def on_waypoint(self):
         self.graph.update_waypoint_status(WaypointStatus.FREE)
@@ -36,10 +42,8 @@ class NavigationController(CommunicationReceiver):
         self.angle_ids.append(angle.get_waypoint().get_id())
         
     def on_point_scanning_finished(self):
-        next_best_waypoint_id = self.graph.go_to_next_best_waypoint()
-        next_best_waypoint_index = self.angle_ids.index(next_best_waypoint_id)
-        self.angle_ids.clear()
-        self.communicator.emit(f"target_line:{next_best_waypoint_index}")
+        self.graph.remove_missing_angles()
+        self.next()
 
     def on_turned_to_target_line(self):
         self.communicator.emit("follow_line")

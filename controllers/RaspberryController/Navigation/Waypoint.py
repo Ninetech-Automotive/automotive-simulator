@@ -50,9 +50,18 @@ class Waypoint:
 
     def get_angles(self):
         return self.angles
+
+    def get_unblocked_angles(self):
+        return [a for a in self.angles if a.get_waypoint().get_status() not in [WaypointStatus.BLOCKED, WaypointStatus.POTENTIALLY_BLOCKED]]
+    
+    def remove_angle_to_waypoint(self, waypoint_id):
+        self.angles = [a for a in self.angles if a.get_waypoint().get_id() != waypoint_id]
+    
+    def get_angle_to_waypoint(self, waypoint_id):
+        return [a for a in self.angles if a.get_waypoint().get_id() == waypoint_id][0]
     
     def get_edge_to_waypoint(self, waypoint_id):
-        angle = [a for a in self.angles if a.get_waypoint().get_id() == waypoint_id][0]
+        angle = self.get_angle_to_waypoint(waypoint_id)
         return angle.get_edge()
     
     def update_angle(self, value: float, waypoint_status: WaypointStatus, edge_status: EdgeStatus):

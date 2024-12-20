@@ -9,7 +9,7 @@ class Edge:
         return self.status.value + (self.length * 10)
     
     def get_status(self):
-        return
+        return self.status
     
     def set_status(self, status):
         self.status = status

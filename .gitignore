@@ -4,3 +4,4 @@ worlds/.Automotive.jpg
 controllers/AutomotiveController/build
 controllers/AutomotiveController/AutomotiveController
 __pycache__/
+.idea

@@ -66,7 +66,8 @@ class Graph:
         while (node.get_id() != self.current_waypoint.get_id()):
             self.shortest_path_to_target.insert(0, node)
             node = node.get_previous_node_to_current_waypoint()
-
+        print('[pi    ] shortest path: ', list(map(lambda n: n.get_id(), self.shortest_path_to_target)))
+ 
     def go_back_to_previous_waypoint(self):
         self.previous_waypoint.set_incoming_angle_by_id(self.current_waypoint.get_id())
         self.current_waypoint = self.previous_waypoint
@@ -84,13 +85,19 @@ class Graph:
     def update_waypoint_from_angle(self, angle_value, waypoint_status, edge_status):
         return self.current_waypoint.update_angle(angle_value, waypoint_status, edge_status)
 
+    def remove_missing_angles(self):
+        for angle in self.current_waypoint.get_angles():
+            if angle.get_edge().get_status() == EdgeStatus.UNKNOWN:
+                angle.get_waypoint().remove_angle_to_waypoint(self.current_waypoint.get_id())
+                self.current_waypoint.remove_angle_to_waypoint(angle.get_waypoint().get_id())
+
     def calculate_shortest_path(self):
         # dijkstra
         self.reset_dijkstra()
         self.current_waypoint.set_weight_to_target(0)
         while(self.has_next_unvisited_node()):
             current_node = self.get_next_unvisited_node()
-            for angle in current_node.get_angles():
+            for angle in current_node.get_unblocked_angles():
                 waypoint = angle.get_waypoint()
                 edge = angle.get_edge()
                 weight_to_target = current_node.get_weight_to_target() + edge.get_weight()

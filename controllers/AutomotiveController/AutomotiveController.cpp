@@ -309,7 +309,7 @@ void pointScanning(Robot *robot, DistanceSensor *ir[], Motor *leftMotor, Motor *
             rightMotor->setVelocity(-1.0);
             startTurnTime = robot->getTime();
 
-            stopTime = robot->getTime() + 1.0;
+            stopTime = robot->getTime() + 0.5;
             while (robot->getTime() < stopTime)
             {
                 robot->step(TIME_STEP);
@@ -350,7 +350,7 @@ void turnToLineX(Robot *robot, DistanceSensor *ir[], Motor *leftMotor, Motor *ri
                 break;
             }
 
-            double stopTime = robot->getTime() + 1.0;
+            double stopTime = robot->getTime() + 0.5;
             while (robot->getTime() < stopTime)
             {
                 robot->step(TIME_STEP);
