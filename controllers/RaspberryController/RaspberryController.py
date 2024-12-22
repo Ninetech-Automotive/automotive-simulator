@@ -1,3 +1,4 @@
+import sys
 from controller import Robot
 from Communicator import Communicator
 from ObjectDetection.ObjectDetector import ObjectDetector
@@ -19,7 +20,8 @@ def main():
     communicator.set_communication_receiver(navigation_controller)
 
     communicator.ping()
-    navigation_controller.start("A")
+    target = sys.argv[1]
+    navigation_controller.start(target)
 
     while robot.step(timestep) != -1:
         communicator.receive()

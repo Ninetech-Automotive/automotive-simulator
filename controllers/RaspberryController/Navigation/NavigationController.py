@@ -53,4 +53,4 @@ class NavigationController(CommunicationReceiver):
         self.graph.go_back_to_previous_waypoint()
 
     def on_obstacle_detected(self):
-        self.graph.obstacale_detected()
+        self.graph.obstacle_detected()

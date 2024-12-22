@@ -1,6 +1,6 @@
 */.DS_Store
 worlds/*.wbproj
-worlds/.Automotive.jpg
+worlds/*.jpg
 controllers/AutomotiveController/build
 controllers/AutomotiveController/AutomotiveController
 __pycache__/

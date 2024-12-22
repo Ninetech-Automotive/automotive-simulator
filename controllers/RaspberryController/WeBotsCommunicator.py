@@ -27,6 +27,10 @@ class WeBotsCommunicator(Communicator):
             self.communication_receiver.on_point_scanning_finished()
         elif message == "turned_to_target_line":
             self.communication_receiver.on_turned_to_target_line()
+        elif message == "cone_detected":
+            self.communication_receiver.on_cone_detected()
+        elif message == "obstacle_detected":
+            self.communication_receiver.on_obstacle_detected()
 
     def receive(self):
         if self.receiver.getQueueLength() != 0:

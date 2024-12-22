@@ -9,8 +9,8 @@ EXTERNPROTO "https://raw.githubusercontent.com/cyberbotics/webots/R2023b/project
 WorldInfo {
 }
 Viewpoint {
-  orientation 0.3943295507304281 0.3704999522076701 -0.840972051161543 1.7383115064219903
-  position -0.22964860088448164 5.012760317472732 5.100250312941314
+  orientation 0.39432965953419635 0.370499620221898 -0.8409721464038356 1.7383124681632194
+  position -0.2296486008844817 5.012760317472732 5.100250312941313
 }
 TexturedBackgroundLight {
   castShadows FALSE
@@ -38,29 +38,6 @@ RectangleArena {
       ]
     }
   }
-}
-Solid {
-  translation -0.228304 -0.891184 -1.11022e-15
-  rotation 0 0 1 0.261802
-  children [
-    Transform {
-      scale 0.0005 0.0005 0.0005
-      children [
-        Shape {
-          appearance PBRAppearance {
-            baseColor 1 0 0
-            metalness 0
-          }
-          geometry Mesh {
-            url [
-              "../assets/01-01-Hindernis/Hindernis-01-01-A.obj"
-            ]
-          }
-        }
-      ]
-    }
-  ]
-  name "Hindernis Rot(2)"
 }
 DEF Automotive E-puck {
   translation -0.19947 2.47346 -6.3962e-05
@@ -103,7 +80,9 @@ DEF Automotive E-puck {
       ]
       name "Raspberry"
       controller "RaspberryController"
-      controllerArgs "A"
+      controllerArgs [
+        "C"
+      ]
     }
     DistanceSensor {
       translation 0.04 -0.03 0.01
@@ -150,11 +129,7 @@ DEF Automotive E-puck {
   ]
 }
 TrafficCone {
-  translation 1.75 1.19 0
-  scale 0.2
-}
-TrafficCone {
-  translation -0.85 1.19 0
+  translation -0.19 0.04 0
   scale 0.2
   name "traffic cone(1)"
 }
@@ -205,8 +180,8 @@ DirectionPanel {
   ]
 }
 Solid {
-  translation 0.44221 1.97624 3.10863e-15
-  rotation 0 0 1 -2.094395307179586
+  translation 0.31721 1.2055 3.10863e-15
+  rotation 0 0 1 -1.5707953071795862
   children [
     Transform {
       scale 0.0005 0.0005 0.0005
@@ -228,8 +203,8 @@ Solid {
   name "Hindernis Rot"
 }
 Solid {
-  translation -1.15965 1.78348 -8.21565e-15
-  rotation 0 0 1 -1.047195307179586
+  translation 0.701125 0.54086 3.10863e-15
+  rotation 0 0 1 2.0944
   children [
     Transform {
       scale 0.0005 0.0005 0.0005
@@ -284,7 +259,7 @@ DEF hide-line Solid {
   name "solid(1)"
 }
 DEF hide-line Solid {
-  translation 0.778693 1.73992 -0.01
+  translation 0.778693 1.73992 -1.73472e-18
   rotation 0 0 1 -2.094395307179586
   children [
     Shape {
@@ -335,7 +310,7 @@ DEF hide-line Solid {
   name "solid(4)"
 }
 DEF hide-line Solid {
-  translation -1.18075 -1.63879 1.73472e-18
+  translation -1.18075 -1.63879 -0.01
   rotation 0 0 1 -2.094395307179586
   children [
     Shape {
@@ -352,7 +327,7 @@ DEF hide-line Solid {
   name "solid(5)"
 }
 DEF hide-line Solid {
-  translation -2.16075 0.04121 -0.02
+  translation -2.16075 0.04121 0
   rotation 0 0 1 3.14159
   children [
     Shape {
@@ -369,7 +344,7 @@ DEF hide-line Solid {
   name "solid(6)"
 }
 DEF hide-line Solid {
-  translation -1.16989 1.74491 -0.01
+  translation -1.16989 1.74491 -0.03
   rotation 0 0 -1 -2.094395307179586
   children [
     Shape {
@@ -403,7 +378,7 @@ DEF hide-line Solid {
   name "solid(8)"
 }
 DEF hide-line Solid {
-  translation -1.50492 1.18203 0
+  translation -1.50492 1.18203 -0.02
   rotation 0 0 1 -1.5707953071795862
   children [
     Shape {
@@ -437,7 +412,7 @@ DEF hide-line Solid {
   name "solid(10)"
 }
 DEF hide-line Solid {
-  translation -1.50494 0.0446339 -0.01
+  translation -1.50494 0.0446339 0
   rotation 0 0 1 -0.523595307179586
   children [
     Shape {
@@ -488,7 +463,7 @@ DEF hide-line Solid {
   name "solid(13)"
 }
 DEF hide-line Solid {
-  translation 0.783683 -0.514576 0
+  translation 0.783683 -0.514576 -0.01
   rotation 0 0 1 1.0472
   children [
     Shape {

@@ -69,9 +69,10 @@ class Graph:
         print('[pi    ] shortest path: ', list(map(lambda n: n.get_id(), self.shortest_path_to_target)))
  
     def go_back_to_previous_waypoint(self):
-        self.previous_waypoint.set_incoming_angle_by_id(self.current_waypoint.get_id())
+        temp_current_waypoint = self.current_waypoint
         self.current_waypoint = self.previous_waypoint
-        self.previous_waypoint = None
+        self.current_waypoint.set_incoming_angle_by_id(temp_current_waypoint.get_id())
+        self.previous_waypoint = temp_current_waypoint
 
     def has_reached_target_waypoint(self):
         return self.current_waypoint == self.target_waypoint
