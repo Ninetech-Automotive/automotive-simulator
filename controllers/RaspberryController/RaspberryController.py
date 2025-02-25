@@ -9,11 +9,14 @@ from Communication.CommunicationReceiver import CommunicationReceiver
 from WeBotsCommunicator import WeBotsCommunicator
 from ObjectDetection.Camera import Camera
 from WeBotsCamera import WeBotsCamera
+from Configuration.Configurator import Configurator
+from pathlib import Path
 
 def main():
     robot = Robot()
     timestep = int(robot.getBasicTimeStep())
 
+    Configurator.initialize(Path("config.json"))
     camera: Camera = WeBotsCamera(timestep, robot)
     object_detector: ObjectDetector = ColorDetector(camera)
     communicator: Communicator = WeBotsCommunicator(timestep, robot)
