@@ -1,12 +1,13 @@
 import sys
 sys.path.insert(1, './Core/src')
 from controller import Robot
-from Communication.Communicator import Communicator
+from Communication.Emitter import Emitter
+from Communication.Receiver import Receiver
 from ObjectDetection.ObjectDetector import ObjectDetector
 from ObjectDetection.ColorDetector import ColorDetector
 from Navigation.NavigationController import NavigationController
-from Communication.CommunicationReceiver import CommunicationReceiver
-from WeBotsCommunicator import WeBotsCommunicator
+from WeBotsEmitter import WeBotsEmitter
+from WeBotsReceiver import WeBotsReceiver
 from ObjectDetection.Camera import Camera
 from WeBotsCamera import WeBotsCamera
 from Configuration.Configurator import Configurator
@@ -19,16 +20,15 @@ def main():
     Configurator.initialize(Path("config.json"))
     camera: Camera = WeBotsCamera(timestep, robot)
     object_detector: ObjectDetector = ColorDetector(camera)
-    communicator: Communicator = WeBotsCommunicator(timestep, robot)
-    navigation_controller: CommunicationReceiver = NavigationController(communicator, object_detector)
-    communicator.set_communication_receiver(navigation_controller)
+    emitter: Emitter = WeBotsEmitter(robot)
+    navigation_controller = NavigationController(emitter, object_detector)
+    receiver: Receiver = WeBotsReceiver(timestep, robot, navigation_controller)
 
-    communicator.ping()
     target = sys.argv[1]
     navigation_controller.start(target)
 
     while robot.step(timestep) != -1:
-        communicator.receive()
+        receiver.receive()
 
 
 if __name__ == "__main__":

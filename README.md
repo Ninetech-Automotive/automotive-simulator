@@ -39,3 +39,7 @@ Checkout another branch with submodule changes
 ```
 git checkout --recurse-submodules
 ```
+
+## UML Class Diagram
+
+![UML Class Diagram](uml-class-diagram.drawio.png)
