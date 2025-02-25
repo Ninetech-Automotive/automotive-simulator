@@ -1,13 +1,13 @@
 import sys
 from controller import Robot
-from Communicator import Communicator
+from Communication.Communicator import Communicator
 from ObjectDetection.ObjectDetector import ObjectDetector
 from ObjectDetection.ColorDetector import ColorDetector
 from Navigation.NavigationController import NavigationController
-from CommunicationReceiver import CommunicationReceiver
+from Communication.CommunicationReceiver import CommunicationReceiver
 from WeBotsCommunicator import WeBotsCommunicator
 from ObjectDetection.Camera import Camera
-from ObjectDetection.WeBotsCamera import WeBotsCamera
+from WeBotsCamera import WeBotsCamera
 
 def main():
     robot = Robot()

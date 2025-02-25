@@ -1,4 +1,4 @@
-from CommunicationReceiver import CommunicationReceiver
+from Communication.CommunicationReceiver import CommunicationReceiver
 from abc import ABC, abstractmethod
 
 class Communicator(ABC):

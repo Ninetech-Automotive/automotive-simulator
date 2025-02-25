@@ -1,7 +1,7 @@
 from Navigation.Graph import Graph
-from Communicator import Communicator
+from Communication.Communicator import Communicator
 from ObjectDetection.ObjectDetector import ObjectDetector
-from CommunicationReceiver import CommunicationReceiver
+from Communication.CommunicationReceiver import CommunicationReceiver
 from Navigation.WaypointStatus import WaypointStatus
 
 class NavigationController(CommunicationReceiver):
