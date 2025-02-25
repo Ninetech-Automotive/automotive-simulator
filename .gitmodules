@@ -1,0 +1,3 @@
+[submodule "controllers/RaspberryController/Core"]
+	path = controllers/RaspberryController/Core
+	url = https://github.com/Ninetech-Automotive/automotive-core

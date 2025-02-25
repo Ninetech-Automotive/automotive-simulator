@@ -1,4 +1,5 @@
 import sys
+sys.path.insert(1, './Core/src')
 from controller import Robot
 from Communication.Communicator import Communicator
 from ObjectDetection.ObjectDetector import ObjectDetector

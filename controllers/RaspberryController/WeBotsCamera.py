@@ -1,4 +1,4 @@
-from ObjectDetection.Camera import Camera
+from Core.src.ObjectDetection.Camera import Camera
 
 class WeBotsCamera(Camera):
 

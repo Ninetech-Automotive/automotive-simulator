@@ -1,5 +1,5 @@
-from Communication.CommunicationReceiver import CommunicationReceiver
-from Communication.Communicator import Communicator
+from Core.src.Communication.CommunicationReceiver import CommunicationReceiver
+from Core.src.Communication.Communicator import Communicator
 
 class WeBotsCommunicator(Communicator):
     def __init__(self, timestep, robot):
