@@ -2,6 +2,8 @@
 
 ## How to work with the automotive-core git submodule
 
+Note: You can add, commit and push changes like normal when changing directory to the submodule at `controllers/RaspberryController/Core`.
+
 Clone the project
 
 ```
@@ -30,4 +32,10 @@ Push changes to remote and submodules at the same time
 
 ```
 git push --recurse-submodules=on-demand
+```
+
+Checkout another branch with submodule changes
+
+```
+git checkout --recurse-submodules
 ```
