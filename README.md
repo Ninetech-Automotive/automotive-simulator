@@ -25,3 +25,9 @@ Push changes to remote and check if all submodle changes have been pushed as wel
 ```
 git push --recurse-submodules=check
 ```
+
+Push changes to remote and submodules at the same time
+
+```
+git push --recurse-submodules=on-demand
+```
