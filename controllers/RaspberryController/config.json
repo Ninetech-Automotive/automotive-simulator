@@ -1,4 +1,8 @@
 {
+  "communication": {
+    "device": "/dev/ttyAMA1",
+    "baud": 9600
+  },
   "angles": {
     "X": {
       "S": 0.0
