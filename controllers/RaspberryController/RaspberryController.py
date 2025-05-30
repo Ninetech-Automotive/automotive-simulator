@@ -22,10 +22,8 @@ def main():
     object_detector: ObjectDetector = ColorDetector(camera)
     emitter: Emitter = WeBotsEmitter(robot)
     navigation_controller = NavigationController(emitter, object_detector)
+    navigation_controller.use_pointscanning()
     receiver: Receiver = WeBotsReceiver(timestep, robot, navigation_controller)
-
-    target = sys.argv[1]
-    navigation_controller.start(target)
 
     while robot.step(timestep) != -1:
         receiver.receive()

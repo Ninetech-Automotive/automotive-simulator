@@ -400,6 +400,8 @@ int main(int argc, char **argv)
 
     double leftSpeed = 0.0, rightSpeed = 0.0;
     double turnEndTime = 0;
+    
+    emit(emitter, "set_target:A");
 
     while (robot->step(timeStep) != -1)
     {

@@ -13,13 +13,18 @@ class WeBotsReceiver(Receiver):
             "point_scanning_finished": self.controller.on_point_scanning_finished,
             "turned_to_target_line": self.controller.on_turned_to_target_line,
             "cone_detected": self.controller.on_cone_detected,
-            "obstacle_detected": self.controller.on_obstacle_detected
+            "obstacle_detected": self.controller.on_obstacle_detected,
+            "set_target": self.controller.on_set_target,
         }
 
     def on_receive(self, message):
         if ":" in message:
             message, value = message.split(":")
-            self.messageHandlers[message](float(value))
+            try:
+                num_value = float(value)
+                self.messageHandlers[message](num_value)
+            except ValueError:
+                self.messageHandlers[message](value)
         else:
             self.messageHandlers[message]()
 
